@@ -1,7 +1,26 @@
-import { Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { UserRole } from '../enums/UserRole';
 
 @Entity('tb_user')
 export class User {
-  @PrimaryGeneratedColumn()
-  id: number; // TODO: mudar para uuid
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+  
+  @Column({ type: 'varchar', length: 255 })
+  username: string;
+
+  @Column({ type: 'varchar', length: 255 })
+  password: string;
+
+  @Column({ type: 'integer', default: 1 })
+  status: number;
+
+  @Column({ type: 'enum', enum: UserRole })
+  role: UserRole
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }
