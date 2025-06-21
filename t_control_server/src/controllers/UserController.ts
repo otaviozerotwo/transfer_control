@@ -12,8 +12,8 @@ export class UserController {
         return res.status(400).json({ message: errorMessage });
       } 
 
-      // const user = await createUserService(validation.data);
-      // return res.status(201).json(user);
+      const user = await createUserService(validation.data);
+      return res.status(201).json(user);
     } catch (error) {
       console.log('Erro na criação do usuário:', error);
       return res.status(500).json({ message: 'Erro interno do servidor.' });

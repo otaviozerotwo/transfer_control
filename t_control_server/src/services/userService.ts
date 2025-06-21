@@ -1,12 +1,11 @@
 import bcrypt from 'bcrypt';
 import { userRepository } from '../repositories/userRepository';
-import { User } from '../entities/User';
 import { UserRole } from '../enums/UserRole';
 
 interface CreateUserProps {
   username: string;
   password: string;
-  role: User['role'];
+  role: string;
 }
 
 export async function createUserService({ username, password, role }: CreateUserProps): Promise<any> {
