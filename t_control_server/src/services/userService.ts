@@ -8,17 +8,26 @@ interface CreateUserProps {
   role: string;
 }
 
-export async function createUserService({ username, password, role }: CreateUserProps): Promise<any> {
-  const hashedPassword = await bcrypt.hash(password, 10);
+export class UserService {
+  async createUser({ username, password, role }: CreateUserProps): Promise<any>{
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-  const newUser = userRepository.create({
-    username,
-    password: hashedPassword,
-    role: role as UserRole
-  });
+    const newUser = userRepository.create({
+      username,
+      password: hashedPassword,
+      role: role as UserRole
+    });
 
-  await userRepository.save(newUser);
+    await userRepository.save(newUser);
 
-  const { password: _, ...user } = newUser;
-  return user;
+    const { password: _, ...user } = newUser;
+    return user;
+  }
+
+  async getAllUsers(): Promise<any>{
+    const users = userRepository.find({
+      select: ['username', 'role', 'createdAt']
+    });
+    return users;
+  }
 }
