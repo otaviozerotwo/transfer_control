@@ -30,4 +30,21 @@ export class UserController {
       return res.status(500).json({ message: 'Erro interno do servidor.' });
     }
   }
+
+  async getUserBy(req: Request, res: Response): Promise<any>{
+    try {
+      const { username } = req.params;
+
+      const user = await new UserService().getUserBy({ username });
+
+      if (!user) {
+        return res.status(404).json({ message: 'Usuário não encontrado.' });
+      }
+
+      return res.json(user);
+    } catch (error) {
+      console.error('Erro ao retornar usuário:', error);
+      return res.status(500).json({ message: 'Erro interno do servidor.' });
+    }
+  }
 }

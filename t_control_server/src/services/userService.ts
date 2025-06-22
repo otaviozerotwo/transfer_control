@@ -8,6 +8,10 @@ interface CreateUserProps {
   role: string;
 }
 
+interface GetUserByProps {
+  username: string;
+}
+
 export class UserService {
   async createUser({ username, password, role }: CreateUserProps): Promise<any>{
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -29,5 +33,11 @@ export class UserService {
       select: ['username', 'role', 'createdAt']
     });
     return users;
+  }
+
+  async getUserBy({ username }: GetUserByProps): Promise<any>{
+    const user = await userRepository.findOneBy({ username });
+
+    return user;
   }
 }
