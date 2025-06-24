@@ -78,9 +78,27 @@ class UserController {
     }
   }
 
-  async deleteUser(req: Request, res: Response): Promise<any>{
-    
-  }
+  // async deleteUser(req: Request, res: Response): Promise<any>{
+  //   const parseParamsResult = updateUserParamsSchema.safeParse(req.params);
+
+  //   if (!parseParamsResult.success) {
+  //     const formattedErrors = parseParamsResult.error.format();
+  //     return res.status(400).json({ message: 'Erro de validação', errors: formattedErrors})
+  //   }
+
+  //   try {
+  //     const deletedUser = await UserService.deleteUser(parseParamsResult.data);
+
+  //     if (!deletedUser) {
+  //       return res.status(404).json({ message: 'Usuário não encontrado.' });
+  //     }
+
+  //     return res.status(204).json({ message: 'Usuário removido com sucesso.' });
+  //   } catch (error: any) {
+  //     console.error('Erro ao atualizar usuário:', error);
+  //     return res.status(500).json({ message: 'Erro interno do servidor.' });
+  //   }
+  // }
 }
 
 export default new UserController();

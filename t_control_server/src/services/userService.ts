@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import { userRepository } from '../repositories/userRepository';
 import { UserRole } from '../enums/UserRole';
 import { User } from '../entities/User';
-import { CreateUserDTO, UpdateUserBodyDTO, UpdateUserParamsDTO } from '../schemas/userSchema';
+import { CreateUserDTO, DeleteUserParamsDTO, UpdateUserBodyDTO, UpdateUserParamsDTO } from '../schemas/userSchema';
 import { UserStatus } from '../enums/UserStatus';
 
 interface GetUserByProps {
@@ -51,6 +51,16 @@ class UserService {
     await userRepository.save(user);
     
     return user;
+  }
+
+  async deleteUser(params: DeleteUserParamsDTO) {
+    const user = await userRepository.findOneBy({ username: params.username });
+
+    if (!user) {
+      return null;
+    }
+
+    await userRepository.remove(user);
   }
 }
 
