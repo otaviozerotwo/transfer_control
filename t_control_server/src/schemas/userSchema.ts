@@ -1,9 +1,11 @@
-import { z } from 'zod/v4'
+import * as z from 'zod/v4'
 
 export const createUserSchema = z.object({
-  username: z.string().min(1, 'username é obrigatório'), // TODO: validação não está funcionando no controller
-  password: z.string().min(1, 'password é obrigatório'),
-  role: z.enum(['admin', 'user'])
+  username: z.string().min(1, 'username é obrigatório'),
+  password: z.string().min(6, 'password precisa ter no mínimo 6 caracteres'),
+  role: z.enum(['admin', 'user']).or(z.undefined()).refine((val) => val !== undefined, {
+    message: 'role é obrigatório'
+  }),
 });
 
 export const updateUserParamsSchema = z.object({
@@ -13,7 +15,7 @@ export const updateUserParamsSchema = z.object({
 export const updateUserBodySchema = z.object({
   username: z.string().min(1, 'username é obrigatório'),
   role: z.string().min(1, 'role é obrigatório'),
-  status: z.number().min(1, 'role é obrigatório'), // TODO: validação não está mostrando a mensagem no console
+  status: z.number().min(1, 'status é obrigatório'), // TODO: entender e corrigir lógica
 });
 
 export type CreateUserDTO = z.infer<typeof createUserSchema>;

@@ -1,13 +1,19 @@
 import { Request, Response } from 'express';
-import { CreateUserDTO, UpdateUserBodyDTO, UpdateUserParamsDTO } from '../schemas/userSchema';
+import { createUserSchema, updateUserBodySchema, updateUserParamsSchema } from '../schemas/userSchema';
 import UserService from '../services/userService';
 import { instanceToPlain } from 'class-transformer';
 
 class UserController {
   async createUser(req: Request, res: Response): Promise<any>{
-    const body = req.body as CreateUserDTO;
+    const parseResult = createUserSchema.safeParse(req.body);
+
+    if (!parseResult.success) {
+      const formattedErrors = parseResult.error.format();
+      return res.status(400).json({ message: 'Erro de validação', errors: formattedErrors})
+    }
+    
     try {
-      const user = await UserService.createUser(body);
+      const user = await UserService.createUser(parseResult.data);
       return res.status(201).json(instanceToPlain(user));
     } catch (error) {
       console.log('Erro na criação do usuário:', error);
@@ -44,10 +50,22 @@ class UserController {
   }
 
   async updateUser(req: Request, res: Response): Promise<any>{
-    const params = req.params as UpdateUserParamsDTO;
-    const body = req.body as UpdateUserBodyDTO;
+    const parseParamsResult = updateUserParamsSchema.safeParse(req.params);
+
+    if (!parseParamsResult.success) {
+      const formattedErrors = parseParamsResult.error.format();
+      return res.status(400).json({ message: 'Erro de validação', errors: formattedErrors})
+    }
+
+    const parseBodyResult = updateUserBodySchema.safeParse(req.body);
+
+    if (!parseBodyResult.success) {
+      const formattedErrors = parseBodyResult.error.format();
+      return res.status(400).json({ message: 'Erro de validação', errors: formattedErrors})
+    }
+
     try {
-      const updatedUser = await UserService.updateUser(params, body);
+      const updatedUser = await UserService.updateUser(parseParamsResult.data, parseBodyResult.data);
 
       if (!updatedUser) {
         return res.status(404).json({ message: 'Usuário não encontrado.' });
