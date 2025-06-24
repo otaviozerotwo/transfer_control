@@ -3,6 +3,7 @@ import { userRepository } from '../repositories/userRepository';
 import { UserRole } from '../enums/UserRole';
 import { User } from '../entities/User';
 import { CreateUserDTO, UpdateUserBodyDTO, UpdateUserParamsDTO } from '../schemas/userSchema';
+import { UserStatus } from '../enums/UserStatus';
 
 interface GetUserByProps {
   username: string;
@@ -45,7 +46,7 @@ class UserService {
 
     user.username = data.username;
     user.role = data.role as UserRole;
-    user.status = data.status;
+    user.status = data.status as UserStatus;
 
     await userRepository.save(user);
     

@@ -1,6 +1,5 @@
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { Exclude } from 'class-transformer';
-import { UserRole } from '../enums/UserRole';
 
 @Entity('tb_user')
 export class User {
@@ -14,11 +13,11 @@ export class User {
   @Exclude()
   password: string;
 
-  @Column({ type: 'integer', default: 1 })
-  status: number;
+  @Column({ type: 'varchar', length: 50, default: 'active' })
+  status: string;
 
-  @Column({ type: 'enum', enum: UserRole })
-  role: UserRole
+  @Column({ type: 'varchar', length: 100 })
+  role: string;
 
   @CreateDateColumn()
   createdAt: Date;

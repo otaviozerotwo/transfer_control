@@ -14,8 +14,12 @@ export const updateUserParamsSchema = z.object({
 
 export const updateUserBodySchema = z.object({
   username: z.string().min(1, 'username é obrigatório'),
-  role: z.string().min(1, 'role é obrigatório'),
-  status: z.number().min(1, 'status é obrigatório'), // TODO: entender e corrigir lógica
+  role: z.enum(['admin', 'user']).or(z.undefined()).refine((val) => val !== undefined, {
+    message: 'role é obrigatório'
+  }),
+  status: z.enum(['active', 'inactive']).or(z.undefined()).refine((val) => val !== undefined, {
+    message: 'status é obrigatório'
+  }),
 });
 
 export type CreateUserDTO = z.infer<typeof createUserSchema>;
