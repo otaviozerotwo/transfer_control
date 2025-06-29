@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { createUserSchema, updateUserBodySchema, updateUserParamsSchema } from '../schemas/userSchema';
+import { createUserSchema, deleteUserParamsSchema, updateUserBodySchema, updateUserParamsSchema } from '../schemas/userSchema';
 import UserService from '../services/userService';
 import { instanceToPlain } from 'class-transformer';
 
@@ -78,27 +78,27 @@ class UserController {
     }
   }
 
-  // async deleteUser(req: Request, res: Response): Promise<any>{
-  //   const parseParamsResult = updateUserParamsSchema.safeParse(req.params);
+  async deleteUser(req: Request, res: Response): Promise<any>{
+    const parseParamsResult = deleteUserParamsSchema.safeParse(req.params);
 
-  //   if (!parseParamsResult.success) {
-  //     const formattedErrors = parseParamsResult.error.format();
-  //     return res.status(400).json({ message: 'Erro de validação', errors: formattedErrors})
-  //   }
+    if (!parseParamsResult.success) {
+      const formattedErrors = parseParamsResult.error.format();
+      return res.status(400).json({ message: 'Erro de validação', errors: formattedErrors})
+    }
 
-  //   try {
-  //     const deletedUser = await UserService.deleteUser(parseParamsResult.data);
+    try {
+      const deletedUser = await UserService.deleteUser(parseParamsResult.data);
 
-  //     if (!deletedUser) {
-  //       return res.status(404).json({ message: 'Usuário não encontrado.' });
-  //     }
+      if (!deletedUser) {
+        return res.status(404).json({ message: 'Usuário não encontrado.' });
+      }
 
-  //     return res.status(204).json({ message: 'Usuário removido com sucesso.' });
-  //   } catch (error: any) {
-  //     console.error('Erro ao atualizar usuário:', error);
-  //     return res.status(500).json({ message: 'Erro interno do servidor.' });
-  //   }
-  // }
+      return res.status(204).send();
+    } catch (error: any) {
+      console.error('Erro ao deletar usuário:', error);
+      return res.status(500).json({ message: 'Erro interno do servidor.' });
+    }
+  }
 }
 
 export default new UserController();

@@ -53,7 +53,7 @@ class UserService {
     return user;
   }
 
-  async deleteUser(params: DeleteUserParamsDTO) {
+  async deleteUser(params: DeleteUserParamsDTO): Promise<User | null> {
     const user = await userRepository.findOneBy({ username: params.username });
 
     if (!user) {
@@ -61,6 +61,8 @@ class UserService {
     }
 
     await userRepository.remove(user);
+
+    return user;
   }
 }
 
