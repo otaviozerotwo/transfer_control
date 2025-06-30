@@ -8,6 +8,10 @@ export const createUserSchema = z.object({
   }),
 });
 
+export const getUserBySchema = z.object({
+  username: z.string().min(1, 'username é obrigatório'),
+});
+
 export const updateUserParamsSchema = z.object({
   username: z.string().min(1, 'username é obrigatório'),
 });
@@ -27,6 +31,7 @@ export const deleteUserParamsSchema = z.object({
 });
 
 export type CreateUserDTO = z.infer<typeof createUserSchema>;
+export type GetUserByDTO = z.infer<typeof getUserBySchema>;
 export type UpdateUserParamsDTO = z.infer<typeof updateUserParamsSchema>;
 export type UpdateUserBodyDTO = z.infer<typeof updateUserBodySchema>;
 export type DeleteUserParamsDTO = z.infer<typeof deleteUserParamsSchema>;

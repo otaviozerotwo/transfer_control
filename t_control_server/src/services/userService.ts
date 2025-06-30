@@ -2,12 +2,8 @@ import bcrypt from 'bcrypt';
 import { userRepository } from '../repositories/userRepository';
 import { UserRole } from '../enums/UserRole';
 import { User } from '../entities/User';
-import { CreateUserDTO, DeleteUserParamsDTO, UpdateUserBodyDTO, UpdateUserParamsDTO } from '../schemas/userSchema';
+import { CreateUserDTO, DeleteUserParamsDTO, GetUserByDTO, UpdateUserBodyDTO, UpdateUserParamsDTO } from '../schemas/userSchema';
 import { UserStatus } from '../enums/UserStatus';
-
-interface GetUserByProps {
-  username: string;
-}
 
 class UserService {
   async createUser(data: CreateUserDTO): Promise<User | null>{
@@ -31,8 +27,12 @@ class UserService {
     return users;
   }
 
-  async getUserBy({ username }: GetUserByProps): Promise<User | null>{
-    const user = await userRepository.findOneBy({ username });
+  async getUserBy(data: GetUserByDTO): Promise<User | null>{
+    const user = await userRepository.findOneBy({ username: data.username });
+
+    if (!user) {
+      return null;
+    }
 
     return user;
   }

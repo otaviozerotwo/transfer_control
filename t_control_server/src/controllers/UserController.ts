@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { createUserSchema, deleteUserParamsSchema, updateUserBodySchema, updateUserParamsSchema } from '../schemas/userSchema';
+import { createUserSchema, deleteUserParamsSchema, getUserBySchema, updateUserBodySchema, updateUserParamsSchema } from '../schemas/userSchema';
 import UserService from '../services/userService';
 import { instanceToPlain } from 'class-transformer';
 
@@ -33,10 +33,15 @@ class UserController {
   }
 
   async getUserBy(req: Request, res: Response): Promise<any>{
-    try {
-      const { username } = req.params;
+    const parseParamsResult = getUserBySchema.safeParse(req.params);
 
-      const user = await UserService.getUserBy({ username });
+    if (!parseParamsResult.success) {
+      const formattedErrors = parseParamsResult.error.format();
+      return res.status(400).json({ message: 'Erro de validação', errors: formattedErrors})
+    }
+
+    try {
+      const user = await UserService.getUserBy(parseParamsResult.data);
 
       if (!user) {
         return res.status(404).json({ message: 'Usuário não encontrado.' });
