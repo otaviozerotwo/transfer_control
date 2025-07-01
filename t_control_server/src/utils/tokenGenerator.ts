@@ -1,9 +1,8 @@
 import jwt from 'jsonwebtoken';
-import { User } from '../entities/User';
 
 const SECRET_ACCESS_TOKEN = process.env.JWT_SECRET;
 
-export const generateAccessToken = ({ username, role}: User) => {
+export const generateAccessToken = (username: string, role: string) => {
   if (!SECRET_ACCESS_TOKEN) throw new Error('JWT_SECRET não definido.');
   return jwt.sign(
     { username, role },
