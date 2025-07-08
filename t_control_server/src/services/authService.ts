@@ -3,22 +3,24 @@ import { AuthBodyDTO } from "../schemas/authSchema";
 import bcrypt from 'bcrypt';
 import { generateAccessToken } from "../utils/tokenGenerator";
 
+export class UserNotFoundError extends Error {};
+export class InvalidPasswordError extends Error {};
+
 class AuthService {
   async login(data: AuthBodyDTO): Promise<any> {
     const user = await userRepository.findOneBy({ username: data.username });
 
     if (!user) {
-      return null;
+      throw new UserNotFoundError('Usuário não encontrado.');
     }
 
     const verifyPass = await bcrypt.compare(data.password, user.password);
 
     if (!verifyPass) {
-      return null;
+      throw new InvalidPasswordError('Senha incorreta.');
     }
 
-    const accessToken = generateAccessToken(user.username, user.role);
-    return accessToken;
+    return generateAccessToken(user.username, user.role);
   }
 }
 

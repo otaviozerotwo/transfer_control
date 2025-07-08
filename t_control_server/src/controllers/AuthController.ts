@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { authBodySchema } from '../schemas/authSchema';
-import AuthService from '../services/authService';
+import AuthService, { InvalidPasswordError, UserNotFoundError } from '../services/authService';
 
 class AuthController {
   async login(req: Request, res: Response): Promise<any> {
@@ -15,8 +15,14 @@ class AuthController {
       const accessToken = await AuthService.login(parseBodyResult.data);
 
       return res.json({ accessToken });
-    } catch (error) {
-      console.error('Erro no login:', error);
+    } catch (error: any) {
+      if (error instanceof UserNotFoundError) {
+        return res.status(404).json({ message: error.message });
+      } else if (error instanceof InvalidPasswordError) {
+        return res.status(401).json({ message: error.message });
+      }
+
+      console.error('Erro inesperado no login:', error);
       return res.status(500).json({ message: 'Erro interno do servidor.' });
     }
   }
