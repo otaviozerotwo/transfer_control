@@ -12,24 +12,15 @@ class UserController {
       return res.status(400).json({ message: 'Erro de validação', errors: formattedErrors})
     }
     
-    try {
-      const user = await UserService.createUser(parseResult.data);
-      return res.status(201).json(instanceToPlain(user));
-    } catch (error) {
-      console.log('Erro na criação do usuário:', error);
-      return res.status(500).json({ message: 'Erro interno do servidor.' });
-    }
+    const user = await UserService.createUser(parseResult.data);
+    
+    return res.status(201).json(instanceToPlain(user));
   }
 
   async getAllUsers(req: Request, res: Response): Promise<any>{
-    try {
-      const users = await UserService.getAllUsers();
-
-      return res.json(users);
-    } catch (error) {
-      console.error('Erro ao retornar usuários:', error);
-      return res.status(500).json({ message: 'Erro interno do servidor.' });
-    }
+    const users = await UserService.getAllUsers();
+    
+    return res.json(users);
   }
 
   async getUserBy(req: Request, res: Response): Promise<any>{
@@ -40,18 +31,9 @@ class UserController {
       return res.status(400).json({ message: 'Erro de validação', errors: formattedErrors})
     }
 
-    try {
-      const user = await UserService.getUserBy(parseParamsResult.data);
-
-      if (!user) {
-        return res.status(404).json({ message: 'Usuário não encontrado.' });
-      }
-
-      return res.json(instanceToPlain(user));
-    } catch (error) {
-      console.error('Erro ao retornar usuário:', error);
-      return res.status(500).json({ message: 'Erro interno do servidor.' });
-    }
+    const user = await UserService.getUserBy(parseParamsResult.data);
+    
+    return res.json(instanceToPlain(user));
   }
 
   async updateUser(req: Request, res: Response): Promise<any>{
@@ -69,18 +51,9 @@ class UserController {
       return res.status(400).json({ message: 'Erro de validação', errors: formattedErrors})
     }
 
-    try {
-      const updatedUser = await UserService.updateUser(parseParamsResult.data, parseBodyResult.data);
-
-      if (!updatedUser) {
-        return res.status(404).json({ message: 'Usuário não encontrado.' });
-      }
-
-      return res.json(instanceToPlain(updatedUser));
-    } catch (error: any) {
-      console.error('Erro ao atualizar usuário:', error);
-      return res.status(500).json({ message: 'Erro interno do servidor.' });
-    }
+    const updatedUser = await UserService.updateUser(parseParamsResult.data, parseBodyResult.data);
+    
+    return res.json(instanceToPlain(updatedUser));
   }
 
   async deleteUser(req: Request, res: Response): Promise<any>{
@@ -91,18 +64,9 @@ class UserController {
       return res.status(400).json({ message: 'Erro de validação', errors: formattedErrors})
     }
 
-    try {
-      const deletedUser = await UserService.deleteUser(parseParamsResult.data);
-
-      if (!deletedUser) {
-        return res.status(404).json({ message: 'Usuário não encontrado.' });
-      }
-
-      return res.status(204).send();
-    } catch (error: any) {
-      console.error('Erro ao deletar usuário:', error);
-      return res.status(500).json({ message: 'Erro interno do servidor.' });
-    }
+    await UserService.deleteUser(parseParamsResult.data);
+    
+    return res.status(204).send();
   }
 }
 

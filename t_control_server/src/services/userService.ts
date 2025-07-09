@@ -4,6 +4,7 @@ import { UserRole } from '../enums/UserRole';
 import { User } from '../entities/User';
 import { CreateUserDTO, DeleteUserParamsDTO, GetUserByDTO, UpdateUserBodyDTO, UpdateUserParamsDTO } from '../schemas/userSchema';
 import { UserStatus } from '../enums/UserStatus';
+import { BadRequestError, NotFoundError } from '../helpers/apiError';
 
 class UserService {
   async createUser(data: CreateUserDTO): Promise<User | null>{
@@ -24,6 +25,11 @@ class UserService {
     const users = userRepository.find({
       select: ['username', 'role', 'createdAt']
     });
+
+    if (!users) {
+      throw new BadRequestError('Erro ao buscar usuários.');
+    }
+
     return users;
   }
 
@@ -31,7 +37,7 @@ class UserService {
     const user = await userRepository.findOneBy({ username: data.username });
 
     if (!user) {
-      return null;
+      throw new NotFoundError('Usuário não encontrado.');
     }
 
     return user;
@@ -41,7 +47,7 @@ class UserService {
     const user = await userRepository.findOneBy({ username: params.username });
 
     if (!user) {
-      return null;
+      throw new NotFoundError('Usuário não encontrado.');
     }
 
     user.username = data.username;
@@ -57,7 +63,7 @@ class UserService {
     const user = await userRepository.findOneBy({ username: params.username });
 
     if (!user) {
-      return null;
+      throw new NotFoundError('Usuário não encontrado.');
     }
 
     await userRepository.remove(user);

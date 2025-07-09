@@ -1,6 +1,7 @@
 import { AppDataSource } from "./databases/data-source";
 import express from 'express';
 import router from './routes/routes';
+import { errorHandler } from "./middlewares/errorHandler";
 
 AppDataSource.initialize()
   .then(() => {
@@ -10,6 +11,8 @@ AppDataSource.initialize()
     const PORT = process.env.NODE_PORT as number | undefined;
 
     app.use(router);
+
+    app.use(errorHandler);
     
     return app.listen(PORT, () => {
       console.log(`Servidor rodando na porta ${PORT}`);
