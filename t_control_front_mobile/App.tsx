@@ -1,7 +1,12 @@
-import LoginScreen from "./src/screens/Login";
+import { AuthProvider } from './src/contexts/AuthContext';
+import AppNavigator from './src/navigation/AppNavigator';
 
 export default function App() {
   return (
-    <LoginScreen />
+    <>
+      <AuthProvider>
+        <AppNavigator />
+      </AuthProvider>
+    </>
   );
 }
