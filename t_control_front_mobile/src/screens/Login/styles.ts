@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
     marginTop: 64,
-    marginBottom: 20,
+    marginBottom: 4,
   },
   containerLogo: {
     width: 96,
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   },
   containerTitle: {
     alignItems: 'center',
-    marginBottom: 48,
+    marginBottom: 24,
   },
   title: {
     fontSize: 28,
