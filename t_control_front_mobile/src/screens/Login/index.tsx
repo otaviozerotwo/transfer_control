@@ -5,7 +5,11 @@ import SafeArea from '../../components/SafeArea';
 import Input from '../../components/Input';
 import { Controller, useForm } from 'react-hook-form';
 import FormButton from '../../components/FormButton';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { api, setAuthToken } from '../../services/api';
+import { Alert } from 'react-native';
 import styles from './styles';
+import axios from 'axios';
 
 type FormData = {
   username: string;
@@ -19,8 +23,29 @@ const LoginScreen = () => {
     formState: { errors },
   } = useForm<FormData>();
 
-  const onSubmit = (data: FormData) => {
-    console.log('Login com:', data);
+  const onSubmit = async (data: FormData) => {
+    try {
+      console.log('Enviando dados:', data);
+
+      const response = await api.post('/login', data);
+      const { token } = response.data;
+
+      await AsyncStorage.setItem('token', token);
+
+      setAuthToken(token);
+
+      console.log('Login realizado com sucesso!');
+      
+    } catch (error: any) {
+      if (axios.isAxiosError(error)) {
+        console.log('Falha no login:', error.response?.data);
+
+        const message = error.response?.data?.message || 'Erro de login.';
+        Alert.alert('Falha no login', message);
+      } else {
+        Alert.alert('Erro', 'Algo inesperado aconteceu.');
+      }
+    }
   };
 
   return (
