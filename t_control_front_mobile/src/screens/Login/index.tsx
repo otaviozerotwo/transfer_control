@@ -8,13 +8,10 @@ import FormButton from '../../components/FormButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { api, setAuthToken } from '../../services/api';
 import { Alert } from 'react-native';
-import styles from './styles';
 import axios from 'axios';
-
-type FormData = {
-  username: string;
-  password: string;
-}
+import { FormData } from '../../types/formData';
+import { useAuth } from '../../contexts/AuthContext';
+import styles from './styles';
 
 const LoginScreen = () => {
   const { 
@@ -23,18 +20,21 @@ const LoginScreen = () => {
     formState: { errors },
   } = useForm<FormData>();
 
+  const { signIn } = useAuth();
+
   const onSubmit = async (data: FormData) => {
     try {
-      console.log('Enviando dados:', data);
-
       const response = await api.post('/login', data);
-      const { token } = response.data;
+      
+      const { accessToken } = response.data;
 
-      await AsyncStorage.setItem('token', token);
+      await AsyncStorage.setItem('token', accessToken);
 
-      setAuthToken(token);
+      setAuthToken(accessToken);
 
       console.log('Login realizado com sucesso!');
+
+      signIn();
       
     } catch (error: any) {
       if (axios.isAxiosError(error)) {
