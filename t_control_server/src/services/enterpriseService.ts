@@ -1,4 +1,5 @@
 import { Enterprise } from "../entities/Enterprise";
+import { BadRequestError } from "../helpers/apiError";
 import { enterpriseRepository } from "../repositories/enterpriseRepository";
 import { CreateEnterpriseDTO } from "../schemas/enterpriseSchema";
 
@@ -12,6 +13,16 @@ class EnterpriseService {
     await enterpriseRepository.save(newEnterprise);
 
     return newEnterprise;
+  }
+
+  async getAllEnterprises(): Promise<Enterprise[] | null> {
+    const enterprises = enterpriseRepository.find();
+
+    if (!enterprises) {
+      throw new BadRequestError('Erro ao buscar empresas.');
+    }
+
+    return enterprises;
   }
 }
 

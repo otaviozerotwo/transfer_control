@@ -16,7 +16,11 @@ class EnterpriseController {
     return res.status(201).json(enterprise);
   }
 
-  async getAllEnterprises(req: Request, res: Response): Promise<any> {}
+  async getAllEnterprises(req: Request, res: Response): Promise<any> {
+    const enterprises = await enterpriseService.getAllEnterprises();
+
+    return res.json(enterprises);
+  }
 
   async getEnterpriseBy(req: Request, res: Response): Promise<any> {}
 

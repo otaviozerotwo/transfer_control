@@ -18,6 +18,7 @@ router.get('/users/:username', UserController.getUserBy);
 router.put('/users/:username', UserController.updateUser);
 router.delete('/users/:username', UserController.deleteUser);
 
-router.post('/enterprise', checkEnterpriseExists, EnterpriseController.createEnterprise);
+router.post('/enterprises', checkEnterpriseExists, EnterpriseController.createEnterprise);
+router.get('/enterprises', EnterpriseController.getAllEnterprises);
 
 export default router;
