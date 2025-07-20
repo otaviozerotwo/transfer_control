@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { createEnterpriseSchema, getEnterpriseSchema } from '../schemas/enterpriseSchema';
+import { createEnterpriseSchema, getEnterpriseSchema, updateEnterpriseBodySchema, updateEnterpriseParamsSchema } from '../schemas/enterpriseSchema';
 import EnterpriseService from '../services/enterpriseService';
 
 class EnterpriseController {
@@ -35,7 +35,25 @@ class EnterpriseController {
     return res.json(enterprise);
   }
 
-  async updateEnterprise(req: Request, res: Response): Promise<any> {}
+  async updateEnterprise(req: Request, res: Response): Promise<any> {
+    const parseParamsResult = updateEnterpriseParamsSchema.safeParse(req.params);
+
+    if (!parseParamsResult.success) {
+      const formattedErrors = parseParamsResult.error.format();
+      return res.status(400).json({ message: 'Erro de validação', errors: formattedErrors });
+    }
+
+    const parseBodyResult = updateEnterpriseBodySchema.safeParse(req.body);
+
+    if (!parseBodyResult.success) {
+      const formattedErrors = parseBodyResult.error.format();
+      return res.status(400).json({ message: 'Erro de validação', errors: formattedErrors });
+    }
+
+    const updatedEnterprise = await EnterpriseService.updateEnterprise(parseParamsResult.data, parseBodyResult.data);
+
+    return res.json(updatedEnterprise);
+  }
 
   async deleteEnterprise(req: Request, res: Response): Promise<any> {}
 }
