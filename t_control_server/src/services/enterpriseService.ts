@@ -1,7 +1,7 @@
 import { Enterprise } from "../entities/Enterprise";
-import { BadRequestError } from "../helpers/apiError";
+import { BadRequestError, NotFoundError } from "../helpers/apiError";
 import { enterpriseRepository } from "../repositories/enterpriseRepository";
-import { CreateEnterpriseDTO } from "../schemas/enterpriseSchema";
+import { CreateEnterpriseDTO, GetEnterpriseByDTO } from "../schemas/enterpriseSchema";
 
 class EnterpriseService {
   async createEnterprise(data: CreateEnterpriseDTO): Promise<Enterprise | null> {
@@ -23,6 +23,16 @@ class EnterpriseService {
     }
 
     return enterprises;
+  }
+
+  async getEnterpriseBy(data: GetEnterpriseByDTO): Promise<Enterprise | null> {
+    const enterprise = await enterpriseRepository.findOneBy({ id: data.id });
+
+    if (!enterprise) {
+      throw new NotFoundError('Empresa não encontrada.');
+    }
+
+    return enterprise;
   }
 }
 

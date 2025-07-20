@@ -20,5 +20,6 @@ router.delete('/users/:username', UserController.deleteUser);
 
 router.post('/enterprises', checkEnterpriseExists, EnterpriseController.createEnterprise);
 router.get('/enterprises', EnterpriseController.getAllEnterprises);
+router.get('/enterprises/:id', EnterpriseController.getEnterpriseBy);
 
 export default router;
