@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { createEnterpriseSchema, getEnterpriseSchema, updateEnterpriseBodySchema, updateEnterpriseParamsSchema } from '../schemas/enterpriseSchema';
+import { createEnterpriseSchema, deleteEnterpriseParamsSchema, getEnterpriseSchema, updateEnterpriseBodySchema, updateEnterpriseParamsSchema } from '../schemas/enterpriseSchema';
 import EnterpriseService from '../services/enterpriseService';
 
 class EnterpriseController {
@@ -55,7 +55,18 @@ class EnterpriseController {
     return res.json(updatedEnterprise);
   }
 
-  async deleteEnterprise(req: Request, res: Response): Promise<any> {}
+  async deleteEnterprise(req: Request, res: Response): Promise<any> {
+    const parseParamsResult = deleteEnterpriseParamsSchema.safeParse(req.params);
+
+    if (!parseParamsResult.success) {
+      const formattedErrors = parseParamsResult.error.format();
+      return res.status(400).json({ message: 'Erro de validação', errors: formattedErrors });
+    }
+
+    await EnterpriseService.deleteEnterprise(parseParamsResult.data);
+
+    return res.status(204).send();
+  }
 }
 
 export default new EnterpriseController();

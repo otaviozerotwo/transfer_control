@@ -2,7 +2,7 @@ import { Enterprise } from "../entities/Enterprise";
 import { EnterpriseStatus } from "../enums/EnterpriseStatus";
 import { BadRequestError, NotFoundError } from "../helpers/apiError";
 import { enterpriseRepository } from "../repositories/enterpriseRepository";
-import { CreateEnterpriseDTO, GetEnterpriseByDTO, UpdateEnterpriseBodyDTO, UpdateEnterpriseParamsDTO } from "../schemas/enterpriseSchema";
+import { CreateEnterpriseDTO, DeleteEnterpriseParamsDTO, GetEnterpriseByDTO, UpdateEnterpriseBodyDTO, UpdateEnterpriseParamsDTO } from "../schemas/enterpriseSchema";
 
 class EnterpriseService {
   async createEnterprise(data: CreateEnterpriseDTO): Promise<Enterprise | null> {
@@ -48,6 +48,18 @@ class EnterpriseService {
     enterprise.status = data.status as EnterpriseStatus;
 
     await enterpriseRepository.save(enterprise);
+
+    return enterprise;
+  }
+
+  async deleteEnterprise(params: DeleteEnterpriseParamsDTO): Promise<Enterprise | null> {
+    const enterprise = await enterpriseRepository.findOneBy({ id: params.id });
+
+    if (!enterprise) {
+      throw new NotFoundError('Empresa não encontrada.');
+    }
+
+    await enterpriseRepository.remove(enterprise);
 
     return enterprise;
   }

@@ -21,7 +21,12 @@ export const updateEnterpriseBodySchema = z.object({
   }),
 });
 
+export const deleteEnterpriseParamsSchema = z.object({
+  id: z.coerce.number().int(),
+});
+
 export type CreateEnterpriseDTO = z.infer<typeof createEnterpriseSchema>;
 export type GetEnterpriseByDTO = z.infer<typeof getEnterpriseSchema>;
 export type UpdateEnterpriseParamsDTO = z.infer<typeof updateEnterpriseParamsSchema>;
 export type UpdateEnterpriseBodyDTO = z.infer<typeof updateEnterpriseBodySchema>;
+export type DeleteEnterpriseParamsDTO = z.infer<typeof deleteEnterpriseParamsSchema>;

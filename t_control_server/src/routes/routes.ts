@@ -22,5 +22,6 @@ router.post('/enterprises', checkEnterpriseExists, EnterpriseController.createEn
 router.get('/enterprises', EnterpriseController.getAllEnterprises);
 router.get('/enterprises/:id', EnterpriseController.getEnterpriseBy);
 router.put('/enterprises/:id', EnterpriseController.updateEnterprise);
+router.delete('/enterprises/:id', EnterpriseController.deleteEnterprise);
 
 export default router;
