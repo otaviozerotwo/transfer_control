@@ -13,6 +13,12 @@ export class NFe {
   @Column({ type: 'varchar', length: 44, unique: true })
   authorizationKey: string;
 
+  @Column()
+  dtEmission: Date;
+
+  @Column()
+  dtEntry: Date;
+
   @CreateDateColumn()
   createdAt: Date;
 

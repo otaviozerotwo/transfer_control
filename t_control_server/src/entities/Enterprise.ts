@@ -15,6 +15,24 @@ export class Enterprise {
   @Column({ type: 'varchar', length: 50, default: 'active' })
   status: string;
 
+  @Column({ type: 'varchar', length: 255 })
+  address: string;
+
+  @Column()
+  addressNumber: number;
+
+  @Column({ type: 'varchar', length: 255 })
+  neighborhood: string;
+
+  @Column({ type: 'varchar', length: 100 })
+  cep: string;
+
+  @Column({ type: 'decimal', precision: 10, scale: 7 })
+  addressLatitude: number;
+
+  @Column({ type: 'decimal', precision: 10, scale: 7 })
+  addressLongitude: number;
+
   @CreateDateColumn()
   createdAt: Date;
 

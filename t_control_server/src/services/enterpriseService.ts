@@ -8,7 +8,13 @@ class EnterpriseService {
   async createEnterprise(data: CreateEnterpriseDTO): Promise<Enterprise | null> {
     const newEnterprise = enterpriseRepository.create({
       cnpj: data.cnpj,
-      name: data.name
+      name: data.name,
+      address: data.address,
+      addressNumber: data.addressNumber,
+      neighborhood: data.neighborhood,
+      cep: data.cep,
+      addressLatitude: data.addressLatitude,
+      addressLongitude: data.addressLongitude
     });
 
     await enterpriseRepository.save(newEnterprise);
@@ -40,12 +46,18 @@ class EnterpriseService {
     const enterprise = await enterpriseRepository.findOneBy({ id: params.id });
 
     if (!enterprise) {
-      throw new NotFoundError('Empresa não encontrada');
+      throw new NotFoundError('Empresa não encontrada.');
     }
 
     enterprise.cnpj = data.cnpj;
     enterprise.name = data.name;
     enterprise.status = data.status as EnterpriseStatus;
+    enterprise.address = data.address,
+    enterprise.addressNumber = data.addressNumber,
+    enterprise.neighborhood = data.neighborhood,
+    enterprise.cep = data.cep,
+    enterprise.addressLatitude = data.addressLatitude,
+    enterprise.addressLongitude = data.addressLongitude
 
     await enterpriseRepository.save(enterprise);
 
