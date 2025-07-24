@@ -5,6 +5,8 @@ import AuthController from "../controllers/AuthController";
 import { authMiddleware } from "../middlewares/authMiddleware";
 import EnterpriseController from "../controllers/EnterpriseController";
 import { checkEnterpriseExists } from "../middlewares/checkEnterpriseExists";
+import VolumeController from "../controllers/VolumeController";
+import { checkVolumeExists } from "../middlewares/checkVolumeExists";
 
 const router = Router();
 
@@ -23,5 +25,11 @@ router.get('/enterprises', EnterpriseController.getAllEnterprises);
 router.get('/enterprises/:id', EnterpriseController.getEnterpriseBy);
 router.put('/enterprises/:id', EnterpriseController.updateEnterprise);
 router.delete('/enterprises/:id', EnterpriseController.deleteEnterprise);
+
+router.post('/volumes', checkVolumeExists, VolumeController.createVolume);
+router.get('/volumes', VolumeController.getAllVolumes);
+router.get('/volumes/:id', VolumeController.getVolumeBy);
+router.put('/volumes/:id', VolumeController.updateVolume);
+router.delete('/volumes/:id', VolumeController.deleteVolume);
 
 export default router;

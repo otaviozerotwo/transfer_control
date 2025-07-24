@@ -1,8 +1,8 @@
-import { Enterprise } from "../entities/Enterprise";
-import { EnterpriseStatus } from "../enums/EnterpriseStatus";
-import { BadRequestError, NotFoundError } from "../helpers/apiError";
-import { enterpriseRepository } from "../repositories/enterpriseRepository";
-import { CreateEnterpriseDTO, DeleteEnterpriseParamsDTO, GetEnterpriseByDTO, UpdateEnterpriseBodyDTO, UpdateEnterpriseParamsDTO } from "../schemas/enterpriseSchema";
+import { Enterprise } from '../entities/Enterprise';
+import { EnterpriseStatus } from '../enums/EnterpriseStatus';
+import { BadRequestError, NotFoundError } from '../helpers/apiError';
+import { enterpriseRepository } from '../repositories/enterpriseRepository';
+import { CreateEnterpriseDTO, DeleteEnterpriseParamsDTO, GetEnterpriseByDTO, UpdateEnterpriseBodyDTO, UpdateEnterpriseParamsDTO } from '../schemas/enterpriseSchema';
 
 class EnterpriseService {
   async createEnterprise(data: CreateEnterpriseDTO): Promise<Enterprise | null> {
