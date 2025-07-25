@@ -7,6 +7,7 @@ import EnterpriseController from "../controllers/EnterpriseController";
 import { checkEnterpriseExists } from "../middlewares/checkEnterpriseExists";
 import VolumeController from "../controllers/VolumeController";
 import { checkVolumeExists } from "../middlewares/checkVolumeExists";
+import NFeController from "../controllers/NFeController";
 
 const router = Router();
 
@@ -31,5 +32,7 @@ router.get('/volumes', VolumeController.getAllVolumes);
 router.get('/volumes/:id', VolumeController.getVolumeBy);
 router.put('/volumes/:id', VolumeController.updateVolume);
 router.delete('/volumes/:id', VolumeController.deleteVolume);
+
+router.post('/nfes', NFeController.createNFe);
 
 export default router;
