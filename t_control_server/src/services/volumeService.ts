@@ -1,11 +1,17 @@
 import { NFe } from "../entities/NFe";
 import { Volume } from "../entities/Volume";
-import { BadRequestError, NotFoundError } from "../helpers/apiError";
+import { BadRequestError, ConflictError, NotFoundError } from "../helpers/apiError";
 import { volumeRepository } from "../repositories/volumeRepository";
 import { CreateVolumeDTO, DeleteVolumeDTO, GetVolumeByDTO, UpdateVolumeBodyDTO, UpdateVolumeParamsDTO } from "../schemas/volumeSchema";
 
 class VolumeService {
   async createVolume(data: CreateVolumeDTO): Promise<Volume | null> {
+    const existingVolume = await volumeRepository.findOneBy({ nrVolume: data.nrVolume });
+
+    if (existingVolume) {
+      throw new ConflictError('nrVolume já existe.');
+    }
+    
     const newVolume = volumeRepository.create({
       nrVolume: data.nrVolume,
       nfe: { id: data.nfe}

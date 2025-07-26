@@ -1,11 +1,17 @@
 import { Enterprise } from '../entities/Enterprise';
 import { EnterpriseStatus } from '../enums/EnterpriseStatus';
-import { BadRequestError, NotFoundError } from '../helpers/apiError';
+import { BadRequestError, ConflictError, NotFoundError } from '../helpers/apiError';
 import { enterpriseRepository } from '../repositories/enterpriseRepository';
 import { CreateEnterpriseDTO, DeleteEnterpriseParamsDTO, GetEnterpriseByDTO, UpdateEnterpriseBodyDTO, UpdateEnterpriseParamsDTO } from '../schemas/enterpriseSchema';
 
 class EnterpriseService {
   async createEnterprise(data: CreateEnterpriseDTO): Promise<Enterprise | null> {
+    const existingEnterprise = await enterpriseRepository.findOneBy({ cnpj: data.cnpj });
+
+    if (existingEnterprise) {
+      throw new ConflictError('cnpj já possui cadastrado.');
+    }
+    
     const newEnterprise = enterpriseRepository.create({
       cnpj: data.cnpj,
       name: data.name,

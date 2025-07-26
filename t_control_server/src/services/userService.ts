@@ -4,10 +4,16 @@ import { UserRole } from '../enums/UserRole';
 import { User } from '../entities/User';
 import { CreateUserDTO, DeleteUserParamsDTO, GetUserByDTO, UpdateUserBodyDTO, UpdateUserParamsDTO } from '../schemas/userSchema';
 import { UserStatus } from '../enums/UserStatus';
-import { BadRequestError, NotFoundError } from '../helpers/apiError';
+import { BadRequestError, ConflictError, NotFoundError } from '../helpers/apiError';
 
 class UserService {
   async createUser(data: CreateUserDTO): Promise<User | null>{
+    const existingUser = await userRepository.findOneBy({ username: data.username });
+
+    if (existingUser) {
+      throw new ConflictError('username já possui cadastrado.');
+    }
+    
     const hashedPassword = await bcrypt.hash(data.password, 10);
 
     const newUser = userRepository.create({
