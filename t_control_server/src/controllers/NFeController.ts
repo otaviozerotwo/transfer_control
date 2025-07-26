@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { createNFeSchema, getNFeSchema, updateNFeBodySchema, updateNFeParamsSchema } from '../schemas/nfeSchema';
+import { createNFeSchema, deleteNFeSchema, getNFeSchema, updateNFeBodySchema, updateNFeParamsSchema } from '../schemas/nfeSchema';
 import nfeService from '../services/nfeService';
 
 class NFeController {
@@ -53,6 +53,19 @@ class NFeController {
     const updatedNFe = await nfeService.updateNFe(parseParamsResult.data, parseBodyResult.data);
 
     return res.json(updatedNFe);
+  }
+
+  async deleteNFe(req: Request, res: Response): Promise<any> {
+    const parseParamsResult = deleteNFeSchema.safeParse(req.params);
+
+    if (!parseParamsResult.success) {
+      const formattedErrors = parseParamsResult.error.format();
+      return res.status(400).json({ message: 'Erro de validação', errors: formattedErrors });
+    }
+
+    await nfeService.deleteNFe(parseParamsResult.data);
+
+    return res.status(204).send();
   }
 }
 

@@ -1,10 +1,10 @@
-import { Router } from "express";
-import UserController from "../controllers/UserController";
-import AuthController from "../controllers/AuthController";
-import { authMiddleware } from "../middlewares/authMiddleware";
-import EnterpriseController from "../controllers/EnterpriseController";
-import VolumeController from "../controllers/VolumeController";
-import NFeController from "../controllers/NFeController";
+import { Router } from 'express';
+import UserController from '../controllers/UserController';
+import AuthController from '../controllers/AuthController';
+import { authMiddleware } from '../middlewares/authMiddleware';
+import EnterpriseController from '../controllers/EnterpriseController';
+import VolumeController from '../controllers/VolumeController';
+import NFeController from '../controllers/NFeController';
 
 const router = Router();
 
@@ -33,6 +33,7 @@ router.delete('/volumes/:id', VolumeController.deleteVolume);
 router.post('/nfes', NFeController.createNFe);
 router.get('/nfes', NFeController.getAllNFe);
 router.get('/nfes/:id', NFeController.getNFeBy);
-// router.put('/nfes/:id', NFeController.updateNfe);
+router.put('/nfes/:id', NFeController.updateNfe);
+router.delete('/nfes/:id', NFeController.deleteNFe);
 
 export default router;
