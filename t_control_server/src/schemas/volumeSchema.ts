@@ -15,7 +15,10 @@ export const updateVolumeParamsSchema = z.object({
 
 export const updateVolumeBodySchema = z.object({
   nr_volume: z.coerce.number(),
-  nfe: z.coerce.number()
+  nfe: z.coerce.number(),
+  status: z.enum(['pending', 'inTransit', 'delivered']).or(z.undefined()).refine((val) => val !== undefined, {
+    message: 'status é obrigatório'
+  }),
 });
 
 export const deleteVolumeSchema = z.object({

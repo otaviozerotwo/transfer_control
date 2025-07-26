@@ -9,6 +9,9 @@ export class Volume {
   @Column({ name: 'nr_volume', unique: true })
   nrVolume: number;
 
+  @Column({ type: 'varchar', length: 50, default: 'pending' })
+  status: string;
+
   @CreateDateColumn()
   createdAt: Date;
 

@@ -1,5 +1,6 @@
 import { NFe } from "../entities/NFe";
 import { Volume } from "../entities/Volume";
+import { VolumeStatus } from "../enums/VolumeStatus";
 import { BadRequestError, ConflictError, NotFoundError } from "../helpers/apiError";
 import { volumeRepository } from "../repositories/volumeRepository";
 import { CreateVolumeDTO, DeleteVolumeDTO, GetVolumeByDTO, UpdateVolumeBodyDTO, UpdateVolumeParamsDTO } from "../schemas/volumeSchema";
@@ -49,8 +50,9 @@ class VolumeService {
       throw new NotFoundError('Volume não encontrado.');
     }
 
-    volume.nrVolume = data.nr_volume,
+    volume.nrVolume = data.nr_volume;
     volume.nfe = { id: data.nfe } as NFe;
+    volume.status = data.status as VolumeStatus;
 
     await volumeRepository.save(volume);
 
