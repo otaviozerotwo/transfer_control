@@ -26,7 +26,7 @@ const LoginScreen = () => {
     try {
       const response = await api.post('/login', data);
       
-      const { accessToken } = response.data;
+      const { accessToken, loggedUser } = response.data;
 
       await AsyncStorage.setItem('token', accessToken);
 
@@ -34,7 +34,7 @@ const LoginScreen = () => {
 
       console.log('Login realizado com sucesso!');
 
-      signIn();
+      signIn(loggedUser);
       
     } catch (error: any) {
       if (axios.isAxiosError(error)) {

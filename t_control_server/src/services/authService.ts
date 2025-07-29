@@ -5,7 +5,7 @@ import { generateAccessToken } from "../utils/tokenGenerator";
 import { NotFoundError, UnauthorizedError } from "../helpers/apiError";
 
 class AuthService {
-  async login(data: AuthBodyDTO): Promise<string> {
+  async login(data: AuthBodyDTO): Promise<{ accessToken: string; loggedUser: { name: string; }}> {
     const user = await userRepository.findOneBy({ username: data.username });
 
     if (!user) {
@@ -18,7 +18,15 @@ class AuthService {
       throw new UnauthorizedError('Senha incorreta.');
     }
 
-    return generateAccessToken(user.username, user.role);
+    const token = generateAccessToken(user.username, user.role);
+    const loggedUser = {
+      name: user.username,
+    };
+
+    return {
+      accessToken: token,
+      loggedUser,
+    }
   }
 }
 

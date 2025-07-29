@@ -1,8 +1,13 @@
 import { createContext, ReactNode, useContext, useState } from "react";
 
+type User = {
+  name: string;
+}
+
 type AuthContextType = {
   isAuthenticated: boolean;
-  signIn: () => void;
+  user: User | null;
+  signIn: (username: User) => void;
   signOut: () => void;
 }
 
@@ -14,12 +19,20 @@ interface AuthProviderProps {
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
   
-  const signIn = () => setIsAuthenticated(true);
-  const signOut = () => setIsAuthenticated(false);
+  const signIn = (user: User) => {
+    setIsAuthenticated(true);
+    setUser(user);
+  };
+
+  const signOut = () => {
+    setIsAuthenticated(false);
+    setUser(null);
+  };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, signIn, signOut }}>
+    <AuthContext.Provider value={{ isAuthenticated, user, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );

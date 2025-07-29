@@ -8,12 +8,14 @@ class AuthController {
 
     if (!parseBodyResult.success) {
       const formattedErrors = parseBodyResult.error.format();
-      return res.status(400).json({ message: 'Erro de validação', errors: formattedErrors})
+      return res.status(400).json({ message: 'Erro de validação', errors: formattedErrors })
     }
 
-    const accessToken = await AuthService.login(parseBodyResult.data);
+    const loginData = await AuthService.login(parseBodyResult.data);
 
-    return res.json({ accessToken });
+    console.log('Usuário logado:', loginData.loggedUser);
+
+    return res.json(loginData);
   }
 
   async refreshToken(req: Request, res: Response): Promise<any> {}
