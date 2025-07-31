@@ -11,6 +11,16 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: 20,
   },
+  title: {
+    fontSize: 20,
+    fontWeight: '600',
+    marginBottom: 16,
+  },
+  statusContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 20,
+  },
 });
 
 export default styles;
