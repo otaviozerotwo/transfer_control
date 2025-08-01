@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
@@ -21,6 +21,15 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: 20,
   },
+  activitiesHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  viewAll: {
+    color: '#666',
+  },
+  
 });
 
 export default styles;

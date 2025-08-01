@@ -1,10 +1,31 @@
-import { ScrollView, Text, View } from 'react-native';
-import styles from './styles';
+import { useState } from 'react';
+import { FlatList, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import SafeArea from '../../components/SafeArea';
 import ActionCard from '../../components/ActionCard';
 import StatusCard from '../../components/StatusCard';
+import ActivityItem from '../../components/ActivityItem';
+import styles from './styles';
 
 const HomeScreen = () => {
+  const recentActivities = [
+    { id: '1', volume: '#VOL-2025', status: 'Entrega realizada - Farmácia XPTO LJ01', hour: '10:30' },
+    { id: '2', volume: '#VOL-2024', status: 'Em trânsito - Farmácia XPTO LJ35', hour: '09:45' },
+    { id: '3', volume: '#VOL-2024', status: 'Em trânsito - Farmácia XPTO LJ35', hour: '09:45' },
+    { id: '4', volume: '#VOL-2024', status: 'Em trânsito - Farmácia XPTO LJ35', hour: '09:45' },
+    { id: '5', volume: '#VOL-2024', status: 'Em trânsito - Farmácia XPTO LJ35', hour: '09:45' },
+    { id: '6', volume: '#VOL-2024', status: 'Em trânsito - Farmácia XPTO LJ35', hour: '09:45' },
+    { id: '7', volume: '#VOL-2024', status: 'Em trânsito - Farmácia XPTO LJ35', hour: '09:45' },
+    { id: '8', volume: '#VOL-2024', status: 'Em trânsito - Farmácia XPTO LJ35', hour: '09:45' },
+    { id: '9', volume: '#VOL-2024', status: 'Em trânsito - Farmácia XPTO LJ35', hour: '09:45' },
+    { id: '10', volume: '#VOL-2024', status: 'Em trânsito - Farmácia XPTO LJ35', hour: '09:45' },
+  ];
+
+  const [showAll, setShowAll] = useState(false);
+  
+  const visibleActivities = showAll ? recentActivities : recentActivities.slice(0, 3);
+
+  const toggleShowAll = () => setShowAll(!showAll);
+
   return (
     <SafeArea>
       <ScrollView style={styles.container}>
@@ -20,7 +41,19 @@ const HomeScreen = () => {
           <StatusCard iconLib='FontAwesome6' iconName='check' title='Entregues' count={45} />
         </View>
         
-        <Text style={styles.title}>Atividades Recentes</Text>
+        <View style={styles.activitiesHeader}>
+          <Text style={styles.title}>Atividades Recentes</Text>
+          <TouchableOpacity onPress={toggleShowAll}>
+            <Text style={styles.viewAll}>{showAll ? 'Ver menos' : 'Ver todas'}</Text>
+          </TouchableOpacity>
+        </View>
+
+        <FlatList
+          data={visibleActivities}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => <ActivityItem {...item} />}
+          scrollEnabled={false}
+        />
       </ScrollView>
     </SafeArea>
   );
