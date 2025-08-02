@@ -1,20 +1,20 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomeScreen from '../screens/Home';
 import Header from '../components/Header';
 import { useState } from 'react';
 import UserMenuModal from '../components/UserMenuModal';
+import { BottomTabs } from './BottomTabs';
 
 const Stack = createNativeStackNavigator();
 
-export default function AppStack() {
+export const AppStack = () => {
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <>
       <Stack.Navigator>
         <Stack.Screen
-          name='HomeScreen'
-          component={HomeScreen}
+          name='Main'
+          component={BottomTabs}
           options={{
             headerTitle: () => <Header onAvatarPress={() => setModalVisible(true)} />,
           }}

@@ -1,9 +1,9 @@
 import { NavigationContainer } from '@react-navigation/native';
-import AuthStack from './AuthStack';
+import { AuthStack } from './AuthStack';
 import { useAuth } from '../contexts/AuthContext';
-import AppStack from './AppStack';
+import { AppStack } from './AppStack';
 
-export default function AppNavigator() {
+export const RootNavigator = () => {
   const { isAuthenticated } = useAuth();
 
   return (
