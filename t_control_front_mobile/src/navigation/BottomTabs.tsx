@@ -14,20 +14,20 @@ export const BottomTabs = () => {
         headerShown: false,
         tabBarIcon: ({ color, size }) => {
           const icons: any = {
-            Home: 'home-sharp',
-            Deliveries: 'cube',
-            Reports: 'bar-chart',
-            Settings: 'settings',
+            Início: 'home-sharp',
+            Entregas: 'cube',
+            Relatórios: 'bar-chart',
+            Ajustes: 'settings',
           };
           return <Ionicons name={icons[route.name]} size={size} color={color} />
         },
         tabBarActiveTintColor: '#000'
       })}
     >
-      <Tab.Screen name='Home' component={HomeScreen} />
-      <Tab.Screen name='Deliveries' component={DeliveriesScreen} />
-      <Tab.Screen name='Reports' component={ReportsScreen} />
-      <Tab.Screen name='Settings' component={SettingsScreen} />
+      <Tab.Screen name='Início' component={HomeScreen} />
+      <Tab.Screen name='Entregas' component={DeliveriesScreen} />
+      <Tab.Screen name='Relatórios' component={ReportsScreen} />
+      <Tab.Screen name='Ajustes' component={SettingsScreen} />
     </Tab.Navigator>
   );
 }

@@ -5,6 +5,7 @@ import ActionCard from '../../components/ActionCard';
 import StatusCard from '../../components/StatusCard';
 import ActivityItem from '../../components/ActivityItem';
 import styles from './styles';
+import ScanVolumeScreen from '../ScanVolumeScreen';
 
 const HomeScreen = () => {
   const recentActivities = [
@@ -30,8 +31,8 @@ const HomeScreen = () => {
     <SafeArea>
       <ScrollView style={styles.container}>
         <View style={styles.quickActions}>
-          <ActionCard iconLib='FontAwesome6' iconName='barcode' label='Escanear Volume' />
-          <ActionCard iconLib='MaterialIcons' iconName='local-shipping' label='Nova Entrega' />
+          <ActionCard iconLib='FontAwesome6' iconName='barcode' label='Escanear Volume' onPress={() => <ScanVolumeScreen />} />
+          <ActionCard iconLib='MaterialIcons' iconName='local-shipping' label='Nova Entrega' onPress={() => <ScanVolumeScreen />} />
         </View>
 
         <Text style={styles.title}>Status do Dia</Text>

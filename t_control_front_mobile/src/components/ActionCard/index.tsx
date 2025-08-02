@@ -23,9 +23,9 @@ const DynamicIcon = ({ lib, name, size, color }: IconProps) => {
   return <IconComponent name={name as any} size={size} color={color} />;
 };
 
-const ActionCard = ({ iconLib, iconName, label }: { iconLib: IconProps['lib']; iconName: string, label: string }) => {
+const ActionCard = ({ iconLib, iconName, label, onPress }: { iconLib: IconProps['lib']; iconName: string, label: string, onPress: () => void; }) => {
   return (
-    <TouchableOpacity style={styles.actionCard}>
+    <TouchableOpacity style={styles.actionCard} onPress={onPress}>
       <DynamicIcon lib={iconLib} name={iconName} size={38} />
       <Text style={styles.actionLabel}>{label}</Text>
     </TouchableOpacity>
