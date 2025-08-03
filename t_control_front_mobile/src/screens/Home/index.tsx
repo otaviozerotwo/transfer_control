@@ -4,10 +4,16 @@ import SafeArea from '../../components/SafeArea';
 import ActionCard from '../../components/ActionCard';
 import StatusCard from '../../components/StatusCard';
 import ActivityItem from '../../components/ActivityItem';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../types/rootStackParamList';
 import styles from './styles';
-import ScanVolumeScreen from '../ScanVolumeScreen';
+
+type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'Início'>;
 
 const HomeScreen = () => {
+  const navigation = useNavigation<NavigationProp>();
+  
   const recentActivities = [
     { id: '1', volume: '#VOL-2025', status: 'Entrega realizada - Farmácia XPTO LJ01', hour: '10:30' },
     { id: '2', volume: '#VOL-2024', status: 'Em trânsito - Farmácia XPTO LJ35', hour: '09:45' },
@@ -31,8 +37,18 @@ const HomeScreen = () => {
     <SafeArea>
       <ScrollView style={styles.container}>
         <View style={styles.quickActions}>
-          <ActionCard iconLib='FontAwesome6' iconName='barcode' label='Escanear Volume' onPress={() => <ScanVolumeScreen />} />
-          <ActionCard iconLib='MaterialIcons' iconName='local-shipping' label='Nova Entrega' onPress={() => <ScanVolumeScreen />} />
+          <ActionCard 
+            iconLib='FontAwesome6' 
+            iconName='barcode' 
+            label='Escanear Volume' 
+            onPress={() => navigation.navigate('ScanVolume')} 
+          />
+          <ActionCard 
+            iconLib='MaterialIcons' 
+            iconName='local-shipping' 
+            label='Nova Entrega' 
+            onPress={() => navigation.navigate('ScanVolume')} 
+          />
         </View>
 
         <Text style={styles.title}>Status do Dia</Text>

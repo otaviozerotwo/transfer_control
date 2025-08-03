@@ -3,6 +3,7 @@ import Header from '../components/Header';
 import { useState } from 'react';
 import UserMenuModal from '../components/UserMenuModal';
 import { BottomTabs } from './BottomTabs';
+import ScanVolumeScreen from '../screens/ScanVolumeScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +19,10 @@ export const AppStack = () => {
           options={{
             headerTitle: () => <Header onAvatarPress={() => setModalVisible(true)} />,
           }}
+        />
+        <Stack.Screen
+          name='ScanVolume'
+          component={ScanVolumeScreen}
         />
       </Stack.Navigator>
       
