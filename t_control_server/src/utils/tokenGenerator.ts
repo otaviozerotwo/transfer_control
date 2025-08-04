@@ -7,6 +7,6 @@ export const generateAccessToken = (username: string, role: string) => {
   return jwt.sign(
     { username, role },
     SECRET_ACCESS_TOKEN,
-    { expiresIn: '5m' }
+    { expiresIn: '30m' } // TODO: temporariamente até implementar o refresh token
   );
 };

@@ -9,32 +9,32 @@ const ScanVolumeScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [permission, requestPermission] = useCameraPermissions();
 
-  const qrCodeLock = useRef(false);
+  const barCodeLock = useRef(false);
 
-  // const handleBarCodeScanned = async ({ data }: { data: string }) => {
-  //   setScanned(true);
+  const handleBarCodeScanned = async ({ data }: { data: string }) => {
+    setModalVisible(false);
+    console.log('BarCode escaneado:', data);
 
-  //   try {
-  //     const response = await api.get(`/volumes/${data}`);
+    try {
+      const response = await api.get(`/volumes/${data}`);
 
-  //     const { volume } = response.data;
+      const volume = response.data;
 
-  //     setVolumeData(volume);
-  //   } catch (error: any) {
-  //     if (axios.isAxiosError(error)) {
-  //       console.log('Erro ao escanear volume:', error.response?.data);
+      console.log(volume);
+      Alert.alert('Dados Volume', JSON.stringify(volume, null, 2));
+    } catch (error: any) {
+      if (axios.isAxiosError(error)) {
+        console.log('Erro ao escanear volume:', error.response?.data);
 
-  //       const message = error.response?.data?.message || 'Erro ao escanear volume';
-  //       Alert.alert('Erro ao escanear volume', message);
+        const message = error.response?.data?.message || 'Erro ao escanear volume';
+        Alert.alert('Erro ao escanear volume', message);
+      } else {
+        Alert.alert('Erro', 'Algo inesperado aconteceu.');
+      }
+    }
+  };
 
-  //       setScanned(false);
-  //     } else {
-  //       Alert.alert('Erro', 'Algo inesperado aconteceu.');
-  //     }
-  //   }
-  // };
-
-  async function handleOpenCamera() {
+  const handleOpenCamera = async () => {
     try {
       const { granted } = await requestPermission();
 
@@ -43,15 +43,10 @@ const ScanVolumeScreen = () => {
       }
 
       setModalVisible(true);
-      qrCodeLock.current = false;
+      barCodeLock.current = false;
     } catch (error) {
       console.log(error);
     }
-  };
-
-  function handleQRCodeRead(data: string) {
-    setModalVisible(false);
-    Alert.alert('QRCode', data);
   };
 
   return (
@@ -61,10 +56,13 @@ const ScanVolumeScreen = () => {
         <CameraView 
           style={styles.camera} 
           facing='back'
+          barcodeScannerSettings={{
+            barcodeTypes: ['code128'],
+          }}
           onBarcodeScanned={({ data }) => {
-            if (data && !qrCodeLock.current) {
-              qrCodeLock.current = true;
-              setTimeout(() => handleQRCodeRead(data), 500);
+            if (data && !barCodeLock.current) {
+              barCodeLock.current = true;
+              setTimeout(() => handleBarCodeScanned({ data }), 500);
             }
           }}
         />

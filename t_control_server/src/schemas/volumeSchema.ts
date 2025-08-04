@@ -6,7 +6,7 @@ export const createVolumeSchema = z.object({
 });
 
 export const getVolumeSchema = z.object({
-  id: z.coerce.number().int(),
+  nrVolume: z.coerce.number(),
 });
 
 export const updateVolumeParamsSchema = z.object({

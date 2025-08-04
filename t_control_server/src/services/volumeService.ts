@@ -34,7 +34,7 @@ class VolumeService {
   }
 
   async getVolumeBy(data: GetVolumeByDTO): Promise<Volume | null> {
-    const volume = await volumeRepository.findOneBy({ id: data.id });
+    const volume = await volumeRepository.findOneBy({ nrVolume: data.nrVolume });
 
     if (!volume) {
       throw new NotFoundError('Volume não encontrado.');
