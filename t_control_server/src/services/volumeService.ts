@@ -34,7 +34,17 @@ class VolumeService {
   }
 
   async getVolumeBy(data: GetVolumeByDTO): Promise<Volume | null> {
-    const volume = await volumeRepository.findOneBy({ nrVolume: data.nrVolume });
+    const volume = await volumeRepository
+      .createQueryBuilder('volume')
+      .leftJoinAndSelect('volume.nfe', 'nfe')
+      .leftJoinAndSelect('nfe.enterprise', 'enterprise')
+      .select([
+        'volume.nrVolume AS volume',
+        'nfe.numNfe AS nfe',
+        'enterprise.name AS enterprise'
+      ])
+      .where('volume.nrVolume = :nrVolume', { nrVolume: data.nrVolume })
+      .getRawOne();
 
     if (!volume) {
       throw new NotFoundError('Volume não encontrado.');
