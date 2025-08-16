@@ -38,16 +38,16 @@ const HomeScreen = () => {
       <ScrollView style={styles.container}>
         <View style={styles.quickActions}>
           <ActionCard 
-            iconLib='MaterialIcons' 
-            iconName='upload' 
-            label='Carregar Entrega' 
-            onPress={() => navigation.navigate('NFeList')} 
+            iconLib='FontAwesome5' 
+            iconName='file-invoice' 
+            label='NFs Pendentes' 
+            onPress={() => navigation.navigate('NFeList', { statusFilter: 'pending' })} 
           />
           <ActionCard 
             iconLib='MaterialIcons' 
-            iconName='download' 
-            label='Descarregar Entrega' 
-            onPress={() => navigation.navigate('NFeList')} 
+            iconName='local-shipping' 
+            label='NFs em Trânsito' 
+            onPress={() => navigation.navigate('NFeList', { statusFilter: 'in_transit' })} 
           />
         </View>
 

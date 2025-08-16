@@ -38,11 +38,17 @@ class NFeService {
     return newNFe;
   }
 
-  async getAllNFe(): Promise<NFe[] | null> {
-    const nfes = nfeRepository.find();
+  async getAllNFe(status?: string): Promise<NFe[] | null> {
+    const query = nfeRepository.createQueryBuilder('nfe');
+
+    if (status) {
+      query.where('nfe.status = :status', { status });
+    }
+
+    const nfes = await query.getMany();
 
     if (!nfes) {
-      throw new BadRequestError('Erro ao buscar nfes.');
+      throw new BadRequestError('Nenhuma nfe encontrada.');
     }
 
     return nfes;

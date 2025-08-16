@@ -1,4 +1,4 @@
-import { useNavigation } from "@react-navigation/native";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
 import { RootStackParamList } from "../../types/rootStackParamList";
@@ -7,9 +7,12 @@ import { ActivityIndicator, Alert, FlatList, Text, TouchableOpacity, View } from
 import axios from "axios";
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
+type NFeListRouteProp = RouteProp<RootStackParamList, 'NFeList'>;
 
 const NFeList = () => {
   const navigation = useNavigation<NavigationProp>();
+  const route = useRoute<NFeListRouteProp>();
+  const { statusFilter } = route.params;
 
   const [nfes, setNfes] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -20,7 +23,7 @@ const NFeList = () => {
 
   const fetchNFes = async () => {
     try {
-      const response = await api.get(`/nfes`);
+      const response = await api.get(`/nfes?status=${statusFilter}`);
 
       const nfes = response.data;
 
@@ -42,10 +45,11 @@ const NFeList = () => {
   const renderItem = ({ item }: any) => (
     <TouchableOpacity
       style={{ padding: 15, borderBottomWidth: 1, borderBlockColor: '#CCC' }}
-      onPress={() => navigation.navigate('ScanVolume')}
+      // onPress={() => navigation.navigate('ScanVolume')}
+      onPress={() => Alert.alert('Teste', 'Cliquei na nota')}
     >
-      <Text style={{ fontWeight: 'bold' }}>NFe:</Text>
-      <Text>Status:</Text>
+      <Text style={{ fontWeight: 'bold' }}>NFe: {item.numNfe}</Text>
+      <Text>Status: {item.status}</Text>
     </TouchableOpacity>
   );
 
@@ -60,9 +64,9 @@ const NFeList = () => {
   return (
     <FlatList
       data={nfes}
-      keyExtractor={(item) => item}
+      keyExtractor={(item: any) => item.id.toString()}
       renderItem={renderItem}
-      ListEmptyComponent={<Text style={{ textAlign: 'center', marginTop: 20 }}>Nenhuma nota encontrada</Text>}
+      ListEmptyComponent={<Text style={{ textAlign: 'center', marginTop: 20 }}>Nenhuma nota disponível</Text>}
     />
   );
 };

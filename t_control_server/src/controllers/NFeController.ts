@@ -17,7 +17,9 @@ class NFeController {
   }
 
   async getAllNFe(req: Request, res: Response): Promise<any> {
-    const nfes = await nfeService.getAllNFe();
+    const { status } = req.query; // pega ?status=pending ou ?status=in_transit
+
+    const nfes = await nfeService.getAllNFe(status as string | undefined);
 
     return res.json(nfes);
   }
