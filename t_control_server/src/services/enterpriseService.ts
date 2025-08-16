@@ -57,7 +57,6 @@ class EnterpriseService {
 
     enterprise.cnpj = data.cnpj;
     enterprise.name = data.name;
-    enterprise.status = data.status as EnterpriseStatus;
     enterprise.address = data.address,
     enterprise.addressNumber = data.addressNumber,
     enterprise.neighborhood = data.neighborhood,

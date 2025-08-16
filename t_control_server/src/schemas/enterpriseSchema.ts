@@ -1,7 +1,7 @@
 import * as z from 'zod/v4';
 
 export const createEnterpriseSchema = z.object({
-  cnpj: z.string().min(14, 'cnpj precisa ter 14 caracteres'),
+  cnpj: z.string().length(14, 'cnpj precisa ter 14 caracteres'),
   name: z.string().min(1, 'name é obrigatório'),
   address: z.string().min(1, 'address é obrigatório'),
   addressNumber: z.coerce.number().min(1, 'addressNumber é obrigatório'),
@@ -12,19 +12,16 @@ export const createEnterpriseSchema = z.object({
 });
 
 export const getEnterpriseSchema = z.object({
-  id: z.coerce.number().int(),
+  id: z.uuid(),
 });
 
 export const updateEnterpriseParamsSchema = z.object({
-  id: z.coerce.number().int(),
+  id: z.uuid(),
 });
 
 export const updateEnterpriseBodySchema = z.object({
-  cnpj: z.string().min(14, 'cnpj precisa ter 14 caracteres'),
+  cnpj: z.string().length(14, 'cnpj precisa ter 14 caracteres'),
   name: z.string().min(1, 'name é obrigatório'),
-  status: z.enum(['active', 'inactive']).or(z.undefined()).refine((val) => val !== undefined, {
-    message: 'status é obrigatório'
-  }),
   address: z.string().min(1, 'address é obrigatório'),
   addressNumber: z.coerce.number().min(1, 'addressNumber é obrigatório'),
   neighborhood: z.string().min(1, 'neighborhood é obrigatório'),
@@ -34,7 +31,7 @@ export const updateEnterpriseBodySchema = z.object({
 });
 
 export const deleteEnterpriseParamsSchema = z.object({
-  id: z.coerce.number().int(),
+  id: z.uuid(),
 });
 
 export type CreateEnterpriseDTO = z.infer<typeof createEnterpriseSchema>;

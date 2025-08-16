@@ -2,27 +2,24 @@ import * as z from 'zod/v4';
 
 export const createVolumeSchema = z.object({
   nrVolume: z.coerce.number(),
-  nfe: z.coerce.number()
+  nfe: z.uuid()
 });
 
 export const getVolumeSchema = z.object({
-  nrVolume: z.coerce.number(),
+  id: z.uuid(),
 });
 
 export const updateVolumeParamsSchema = z.object({
-  id: z.coerce.number().int(),
+  id: z.uuid(),
 });
 
 export const updateVolumeBodySchema = z.object({
   nr_volume: z.coerce.number(),
-  nfe: z.coerce.number(),
-  status: z.enum(['pending', 'inTransit', 'delivered']).or(z.undefined()).refine((val) => val !== undefined, {
-    message: 'status é obrigatório'
-  }),
+  nfe: z.uuid(),
 });
 
 export const deleteVolumeSchema = z.object({
-  id: z.coerce.number().int()
+  id: z.uuid(),
 })
 
 export type CreateVolumeDTO = z.infer<typeof createVolumeSchema>;

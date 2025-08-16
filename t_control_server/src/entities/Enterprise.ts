@@ -1,10 +1,11 @@
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { NFe } from './NFe';
+import { EnterpriseType } from '../enums/EnterpriseType';
 
 @Entity('tb_enterprise')
 export class Enterprise {
-  @PrimaryGeneratedColumn({ name: 'cd_enterprise' })
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ type: 'varchar', length: 14, unique: true })
   cnpj: string;
@@ -18,7 +19,7 @@ export class Enterprise {
   @Column({ type: 'varchar', length: 255 })
   address: string;
 
-  @Column()
+  @Column({ name: 'address_number' })
   addressNumber: number;
 
   @Column({ type: 'varchar', length: 255 })
@@ -27,18 +28,24 @@ export class Enterprise {
   @Column({ type: 'varchar', length: 100 })
   cep: string;
 
-  @Column({ type: 'decimal', precision: 10, scale: 7 })
+  @Column({ name: 'address_latitude', type: 'decimal', precision: 10, scale: 7 })
   addressLatitude: number;
 
-  @Column({ type: 'decimal', precision: 10, scale: 7 })
+  @Column({ name: 'address_longitude', type: 'decimal', precision: 10, scale: 7 })
   addressLongitude: number;
 
-  @CreateDateColumn()
+  @Column({ type: 'enum', enum: EnterpriseType, default: EnterpriseType.ISSUER_RECIPIENT })
+  type: EnterpriseType;
+
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 
-  @OneToMany(() => NFe, (nfe) => nfe.enterprise)
-  nfes: NFe[];
+  @OneToMany(() => NFe, (nfe) => nfe.issuer)
+  nfesIssued: NFe[]; // NOTAS EMITIDAS
+  
+  @OneToMany(() => NFe, (nfe) => nfe.recipient)
+  nfesReceived: NFe[]; // NOTAS RECEBIDAS
 }

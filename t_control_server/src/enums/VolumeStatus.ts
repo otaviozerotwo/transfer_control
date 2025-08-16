@@ -1,5 +1,5 @@
 export enum VolumeStatus {
   PENDING = 'pending',
-  IN_TRANSIT = 'inTransit',
+  LOADED = 'loaded',
   DELIVERED = 'delivered',
 }

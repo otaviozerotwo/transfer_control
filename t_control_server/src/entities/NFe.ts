@@ -1,33 +1,37 @@
 import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { Enterprise } from './Enterprise';
 import { Volume } from './Volume';
+import { NFeStatus } from '../enums/NFeStatus';
 
 @Entity('tb_nfe')
 export class NFe {
-  @PrimaryGeneratedColumn({ name: 'cd_nfe' })
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ name: 'nr_nfe' })
   numNfe: number;
 
-  @Column({ type: 'varchar', length: 44, unique: true })
+  @Column({ name: 'authorization_key', type: 'varchar', length: 44, unique: true })
   authorizationKey: string;
 
-  @Column()
+  @Column({ type: 'enum', enum: NFeStatus, default: NFeStatus.PENDING })
+  status: NFeStatus;
+
+  @Column({ name: 'dt_emission', type: 'timestamp' })
   dtEmission: Date;
 
-  @Column()
-  dtEntry: Date;
-
-  @CreateDateColumn()
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 
-  @ManyToOne(() => Enterprise, (enterprise) => enterprise.nfes)
-  enterprise: Enterprise;
+  @ManyToOne(() => Enterprise, (enterprise) => enterprise.nfesIssued)
+  issuer: Enterprise;
 
-  @OneToMany(() => Volume, (volume) => volume.nfe)
+  @ManyToOne(() => Enterprise, (enterprise) => enterprise.nfesReceived)
+  recipient: Enterprise;
+
+  @OneToMany(() => Volume, (volume) => volume.nfe, { cascade: true })
   volume: Volume[];
 }

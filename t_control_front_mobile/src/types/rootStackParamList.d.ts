@@ -5,4 +5,5 @@ export type RootStackParamList = {
   Entregas: undefined;
   Relatórios: undefined;
   Ajustes: undefined;
+  NFeList: undefined;
 };

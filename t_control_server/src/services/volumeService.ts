@@ -15,7 +15,7 @@ class VolumeService {
     
     const newVolume = volumeRepository.create({
       nrVolume: data.nrVolume,
-      nfe: { id: data.nfe}
+      nfe: { id: data.nfe }
     });
 
     await volumeRepository.save(newVolume);
@@ -37,13 +37,16 @@ class VolumeService {
     const volume = await volumeRepository
       .createQueryBuilder('volume')
       .leftJoinAndSelect('volume.nfe', 'nfe')
-      .leftJoinAndSelect('nfe.enterprise', 'enterprise')
+      .leftJoinAndSelect('nfe.issuer', 'issuer')
+      .leftJoinAndSelect('nfe.recipient', 'recipient')
       .select([
         'volume.nrVolume AS volume',
         'nfe.numNfe AS nfe',
-        'enterprise.name AS enterprise'
+        'issuer.name AS issuer',
+        'recipient.name AS recipient',
+        'volume.status As status'
       ])
-      .where('volume.nrVolume = :nrVolume', { nrVolume: data.nrVolume })
+      .where('volume.id = :id', { id: data.id })
       .getRawOne();
 
     if (!volume) {
@@ -62,7 +65,6 @@ class VolumeService {
 
     volume.nrVolume = data.nr_volume;
     volume.nfe = { id: data.nfe } as NFe;
-    volume.status = data.status as VolumeStatus;
 
     await volumeRepository.save(volume);
 

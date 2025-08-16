@@ -1,17 +1,36 @@
 import { Enterprise } from '../entities/Enterprise';
 import { NFe } from '../entities/NFe';
 import { BadRequestError, ConflictError, NotFoundError } from '../helpers/apiError';
+import { enterpriseRepository } from '../repositories/enterpriseRepository';
 import { nfeRepository } from '../repositories/nfeRepository';
 import { CreateNFeDTO, DeleteNFeDTO, GetNFeByDTO, UpdateNFeBodyDTO, UpdateNFeParamsDTO } from '../schemas/nfeSchema';
 
 class NFeService {
   async createNFe(data: CreateNFeDTO): Promise<NFe | null> {
+    const issuer = await enterpriseRepository.findOneBy({ id: data.issuerId });
+
+    if (!issuer) {
+      throw new NotFoundError('Issuer não encontado.');
+    }
+
+    const recipient = await enterpriseRepository.findOneBy({ id: data.recipientId });
+
+    if (!recipient) {
+      throw new NotFoundError('Recipient não encontado.');
+    }
+
+    const existingNfe = await nfeRepository.findOneBy({ authorizationKey: data.authorizationKey });
+    
+    if (existingNfe) {
+      throw new ConflictError('authorizationKey já cadastrada.');
+    }
+
     const newNFe = nfeRepository.create({
       numNfe: data.numNfe,
       authorizationKey: data.authorizationKey,
       dtEmission: data.dtEmission,
-      dtEntry: data.dtEntry,
-      enterprise: { id: data.enterprise },
+      issuer,
+      recipient,
     });
 
     await nfeRepository.save(newNFe);
@@ -51,12 +70,24 @@ class NFeService {
     if (existingNfe && existingNfe.id !== nfe.id) {
       throw new ConflictError('authorizationKey já está vinculada a outra nota fiscal.');
     }
+
+    const issuer = await enterpriseRepository.findOneBy({ id: data.issuerId });
+
+    if (!issuer) {
+      throw new NotFoundError('Issuer não encontado.');
+    }
+
+    const recipient = await enterpriseRepository.findOneBy({ id: data.recipientId });
+
+    if (!recipient) {
+      throw new NotFoundError('Recipient não encontado.');
+    }
     
     nfe.numNfe = data.numNfe;
     nfe.authorizationKey = data.authorizationKey;
-    nfe.enterprise = { id: data.enterprise } as Enterprise;
     nfe.dtEmission = data.dtEmission;
-    nfe.dtEntry = data.dtEntry;
+    nfe.issuer;
+    nfe.recipient;
 
     await nfeRepository.save(nfe);
 

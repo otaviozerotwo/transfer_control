@@ -4,6 +4,7 @@ import { useState } from 'react';
 import UserMenuModal from '../components/UserMenuModal';
 import { BottomTabs } from './BottomTabs';
 import ScanVolumeScreen from '../screens/ScanVolumeScreen';
+import NFeList from '../screens/NFeList';
 
 const Stack = createNativeStackNavigator();
 
@@ -23,6 +24,10 @@ export const AppStack = () => {
         <Stack.Screen
           name='ScanVolume'
           component={ScanVolumeScreen}
+        />
+        <Stack.Screen
+          name='NFeList'
+          component={NFeList}
         />
       </Stack.Navigator>
       

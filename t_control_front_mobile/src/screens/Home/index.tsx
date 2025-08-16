@@ -38,16 +38,16 @@ const HomeScreen = () => {
       <ScrollView style={styles.container}>
         <View style={styles.quickActions}>
           <ActionCard 
-            iconLib='FontAwesome6' 
-            iconName='barcode' 
-            label='Escanear Volume' 
-            onPress={() => navigation.navigate('ScanVolume')} 
+            iconLib='MaterialIcons' 
+            iconName='upload' 
+            label='Carregar Entrega' 
+            onPress={() => navigation.navigate('NFeList')} 
           />
           <ActionCard 
             iconLib='MaterialIcons' 
-            iconName='local-shipping' 
-            label='Nova Entrega' 
-            onPress={() => navigation.navigate('ScanVolume')} 
+            iconName='download' 
+            label='Descarregar Entrega' 
+            onPress={() => navigation.navigate('NFeList')} 
           />
         </View>
 

@@ -26,7 +26,7 @@ router.delete('/enterprises/:id', EnterpriseController.deleteEnterprise);
 
 router.post('/volumes', VolumeController.createVolume);
 router.get('/volumes', VolumeController.getAllVolumes);
-router.get('/volumes/:nrVolume', VolumeController.getVolumeBy);
+router.get('/volumes/:id', VolumeController.getVolumeBy);
 router.put('/volumes/:id', VolumeController.updateVolume);
 router.delete('/volumes/:id', VolumeController.deleteVolume);
 

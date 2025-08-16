@@ -4,14 +4,18 @@ import { api } from '../../services/api';
 import axios from 'axios';
 import { Alert, Button, Modal, View } from 'react-native';
 import styles from './styles';
+import VolumeDetailsModal from '../../components/VolumeDetailsModal';
 
 const ScanVolumeScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [permission, requestPermission] = useCameraPermissions();
+  const [volumeData, setVolumeData] = useState(null);
+  const [scanned, setScanned] = useState(false);
 
   const barCodeLock = useRef(false);
 
   const handleBarCodeScanned = async ({ data }: { data: string }) => {
+    setScanned(true);
     setModalVisible(false);
     console.log('BarCode escaneado:', data);
 
@@ -21,7 +25,8 @@ const ScanVolumeScreen = () => {
       const volume = response.data;
 
       console.log(volume);
-      Alert.alert('Dados Volume', JSON.stringify(volume, null, 2));
+      // Alert.alert('Dados Volume', JSON.stringify(volume, null, 2));
+      setVolumeData(volume);
     } catch (error: any) {
       if (axios.isAxiosError(error)) {
         console.log('Erro ao escanear volume:', error.response?.data);
@@ -30,6 +35,7 @@ const ScanVolumeScreen = () => {
         Alert.alert('Erro ao escanear volume', message);
       } else {
         Alert.alert('Erro', 'Algo inesperado aconteceu.');
+        setScanned(false);
       }
     }
   };
@@ -67,9 +73,20 @@ const ScanVolumeScreen = () => {
           }}
         />
 
-        <View style={{ position: 'absolute', bottom: 32, left: 32, right: 32 }}>
+        {/* <View style={{ position: 'absolute', bottom: 32, left: 32, right: 32 }}>
           <Button title='Cancelar' onPress={() => setModalVisible(false)} />
-        </View>
+        </View> */}
+
+        {volumeData && (
+          <VolumeDetailsModal
+            visible={true}
+            volume={volumeData}
+            onClose={() => {
+              setVolumeData(null);
+              setScanned(false);
+            }}
+          />
+        )}
       </Modal>
     </View>
   );

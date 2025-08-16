@@ -2,30 +2,30 @@ import * as z from 'zod/v4';
 
 export const createNFeSchema = z.object({
   numNfe: z.coerce.number(),
-  authorizationKey: z.string().min(44, 'authorizationKey deve ter 44 caracteres'),
+  authorizationKey: z.string().length(44, 'authorizationKey deve ter 44 caracteres'),
   dtEmission: z.coerce.date(),
-  dtEntry: z.coerce.date(),
-  enterprise: z.coerce.number()
+  issuerId: z.uuid('issuerId deve ser um UUID válido'),
+  recipientId: z.uuid('recipientId deve ser um UUID válido'),
 });
 
 export const getNFeSchema = z.object({
-  id: z.coerce.number().int(),
+  id: z.uuid(),
 });
 
 export const updateNFeParamsSchema = z.object({
-  id: z.coerce.number().int(),
+  id: z.uuid(),
 });
 
 export const updateNFeBodySchema = z.object({
   numNfe: z.coerce.number(),
-  authorizationKey: z.string().min(44, 'authorizationKey deve ter 44 caracteres'),
+  authorizationKey: z.string().length(44, 'authorizationKey deve ter 44 caracteres'),
   dtEmission: z.coerce.date(),
-  dtEntry: z.coerce.date(),
-  enterprise: z.coerce.number()
+  issuerId: z.uuid('issuerId deve ser um UUID válido'),
+  recipientId: z.uuid('recipientId deve ser um UUID válido'),
 });
 
 export const deleteNFeSchema = z.object({
-  id: z.coerce.number().int()
+  id: z.uuid(),
 });
 
 export type CreateNFeDTO = z.infer<typeof createNFeSchema>;
