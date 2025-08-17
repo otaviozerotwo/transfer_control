@@ -5,6 +5,7 @@ import { RootStackParamList } from "../../types/rootStackParamList";
 import { api } from "../../services/api";
 import { ActivityIndicator, Alert, FlatList, Text, TouchableOpacity, View } from "react-native";
 import axios from "axios";
+import styles from "./styles";
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 type NFeListRouteProp = RouteProp<RootStackParamList, 'NFeList'>;
@@ -62,12 +63,18 @@ const NFeList = () => {
   }
   
   return (
-    <FlatList
-      data={nfes}
-      keyExtractor={(item: any) => item.id.toString()}
-      renderItem={renderItem}
-      ListEmptyComponent={<Text style={{ textAlign: 'center', marginTop: 20 }}>Nenhuma nota disponível</Text>}
-    />
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>Total de NFs Pendentes</Text>
+        <Text style={styles.headerContent}>{nfes.length}</Text>
+      </View>
+      <FlatList
+        data={nfes}
+        keyExtractor={(item: any) => item.id.toString()}
+        renderItem={renderItem}
+        ListEmptyComponent={<Text style={{ textAlign: 'center', marginTop: 20 }}>Nenhuma nota disponível</Text>}
+      />
+    </View>
   );
 };
 
