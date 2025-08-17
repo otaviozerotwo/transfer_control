@@ -7,6 +7,7 @@ import { ActivityIndicator, Alert, FlatList, Text, TouchableOpacity, View } from
 import axios from "axios";
 import styles from "./styles";
 import NFeCard from "../../components/NFeCard";
+import ConfirmModal from "../../components/ConfirmModal";
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 type NFeListRouteProp = RouteProp<RootStackParamList, 'NFeList'>;
@@ -18,6 +19,8 @@ const NFeList = () => {
 
   const [nfes, setNfes] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     fetchNFes();
@@ -45,7 +48,10 @@ const NFeList = () => {
   };
 
   const renderItem = ({ item }: any) => (
-    <NFeCard item={item} />
+    <NFeCard 
+      item={item}
+      onInitScanVolume={() => setModalVisible(true)} 
+    />
   );
 
   if (loading) {
@@ -55,6 +61,11 @@ const NFeList = () => {
       </View>
     );
   }
+
+  const handleConfirm = () => {
+    setModalVisible(false);
+    navigation.navigate('ScanVolume');
+  };
   
   return (
     <View style={styles.container}>
@@ -67,6 +78,13 @@ const NFeList = () => {
         keyExtractor={(item: any) => item.id.toString()}
         renderItem={renderItem}
         ListEmptyComponent={<Text style={{ textAlign: 'center', marginTop: 20 }}>Nenhuma nota disponível</Text>}
+      />
+
+      <ConfirmModal
+        visible={modalVisible}
+        title="Deseja iniciar conferência de volumes?"
+        onCancel={() => setModalVisible(false)}
+        onConfirm={handleConfirm}
       />
     </View>
   );

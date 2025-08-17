@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     borderRadius: 9999
   },
   button: {
-    width: 'auto',
+    width: 264,
     flexDirection: 'row',
     alignItems: 'center',
     alignSelf: 'flex-start',
@@ -57,6 +57,16 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#FFF',
     fontWeight: 'bold'
+  },
+  nfDestinationContainer: {
+    width: 264,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  nfDestinationLabel: {
+    fontSize: 12,
+    color: '#666'
   },
 });
 

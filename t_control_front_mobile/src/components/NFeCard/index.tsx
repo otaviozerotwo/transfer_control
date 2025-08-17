@@ -1,14 +1,17 @@
-import { Text, TouchableOpacity, View } from "react-native";
+import { Alert, Text, TouchableOpacity, View } from "react-native";
 import { format } from 'date-fns';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import styles from "./styles";
 import nfeStatusMap from "../../utils/nfeStatusMap";
+import ConfirmModal from "../ConfirmModal";
+import { useState } from "react";
 
 interface NFeCardProps {
   item: any;
+  onInitScanVolume: () => void;
 };
 
-const NFeCard = ({ item }: NFeCardProps) => {
+const NFeCard = ({ item, onInitScanVolume }: NFeCardProps) => {
   const formattedDate = format(new Date(item.dtEmission), 'dd/MM/yyyy');
   const formattedNfNumber = item.numNfe.toString().padStart(8, '0');
   const translattedNfStatus = nfeStatusMap(item.status);
@@ -22,8 +25,14 @@ const NFeCard = ({ item }: NFeCardProps) => {
         </View>
       </View>
       <View style={{ marginBottom: 4 }}>
-        <Text>Origem: {item.issuer}</Text>
-        <Text>Destino: {item.destination}</Text>
+        <View style={styles.nfDestinationContainer}>
+          <Text style={styles.nfDestinationLabel}>Origem:</Text> 
+          <Text>{item.issuer}</Text>
+        </View>
+        <View style={styles.nfDestinationContainer}>
+          <Text style={styles.nfDestinationLabel}>Destino:</Text> 
+          <Text>{item.destination}</Text>
+        </View>
       </View>
       <View style={styles.nfInfoContainer}>
         <Text style={styles.nfInfoContent}>{item.volumesCount} volumes</Text>
@@ -33,9 +42,10 @@ const NFeCard = ({ item }: NFeCardProps) => {
       <View>
         <TouchableOpacity
           style={styles.button}
+          onPress={onInitScanVolume}
         >
           <MaterialIcons name="play-arrow" size={24} color="#FFF" />
-          <Text style={styles.buttonText}>Iniciar conferência de volumes</Text>
+          <Text style={styles.buttonText}>Conferência de volumes</Text>
         </TouchableOpacity>
       </View>
     </View>
