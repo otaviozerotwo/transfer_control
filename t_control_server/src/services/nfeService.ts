@@ -1,9 +1,11 @@
 import { Enterprise } from '../entities/Enterprise';
 import { NFe } from '../entities/NFe';
+import { NFeStatus } from '../enums/NFeStatus';
 import { BadRequestError, ConflictError, NotFoundError } from '../helpers/apiError';
 import { enterpriseRepository } from '../repositories/enterpriseRepository';
 import { nfeRepository } from '../repositories/nfeRepository';
 import { CreateNFeDTO, DeleteNFeDTO, GetNFeByDTO, UpdateNFeBodyDTO, UpdateNFeParamsDTO } from '../schemas/nfeSchema';
+import { NFeListItem } from '../types/nfeListItem';
 
 class NFeService {
   async createNFe(data: CreateNFeDTO): Promise<NFe | null> {
@@ -38,20 +40,33 @@ class NFeService {
     return newNFe;
   }
 
-  async getAllNFe(status?: string): Promise<NFe[] | null> {
-    const query = nfeRepository.createQueryBuilder('nfe');
+  async getAllNFe(status?: string): Promise<NFeListItem[] | null> {
+    const query = nfeRepository
+      .createQueryBuilder('nfe')
+      .leftJoinAndSelect('nfe.issuer', 'issuer')
+      .leftJoinAndSelect('nfe.recipient', 'recipient')
+      .loadRelationCountAndMap('nfe.volumesCount', 'nfe.volume')
+      .orderBy('nfe.createdAt', 'DESC')
 
     if (status) {
       query.where('nfe.status = :status', { status });
     }
 
-    const nfes = await query.getMany();
+    const rows = await query.getMany();
 
-    if (!nfes) {
+    if (!rows) {
       throw new BadRequestError('Nenhuma nfe encontrada.');
     }
 
-    return nfes;
+    return rows.map((nfe: any) => ({
+      id: nfe.id,
+      numNfe: nfe.numNfe,
+      status: nfe.status,
+      dtEmission: nfe.dtEmission,
+      issuer: nfe.issuer?.name ?? null,
+      destination: nfe.recipient?.name ?? null,
+      volumesCount: nfe.volumesCount ?? 0,
+    }));
   }
 
   async getNFeBy(data: GetNFeByDTO): Promise<NFe | null> {

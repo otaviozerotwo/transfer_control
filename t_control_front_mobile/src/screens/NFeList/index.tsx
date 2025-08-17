@@ -6,6 +6,7 @@ import { api } from "../../services/api";
 import { ActivityIndicator, Alert, FlatList, Text, TouchableOpacity, View } from "react-native";
 import axios from "axios";
 import styles from "./styles";
+import NFeCard from "../../components/NFeCard";
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 type NFeListRouteProp = RouteProp<RootStackParamList, 'NFeList'>;
@@ -44,14 +45,7 @@ const NFeList = () => {
   };
 
   const renderItem = ({ item }: any) => (
-    <TouchableOpacity
-      style={{ padding: 15, borderBottomWidth: 1, borderBlockColor: '#CCC' }}
-      // onPress={() => navigation.navigate('ScanVolume')}
-      onPress={() => Alert.alert('Teste', 'Cliquei na nota')}
-    >
-      <Text style={{ fontWeight: 'bold' }}>NFe: {item.numNfe}</Text>
-      <Text>Status: {item.status}</Text>
-    </TouchableOpacity>
+    <NFeCard item={item} />
   );
 
   if (loading) {

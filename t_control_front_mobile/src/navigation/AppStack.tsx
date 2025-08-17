@@ -28,6 +28,9 @@ export const AppStack = () => {
         <Stack.Screen
           name='NFeList'
           component={NFeList}
+          options={{
+            title: 'NFs Pendentes/Carregadas'
+          }}
         />
       </Stack.Navigator>
       
