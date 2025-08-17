@@ -44,6 +44,20 @@ const styles = StyleSheet.create({
     backgroundColor: '#666',
     borderRadius: 9999
   },
+  button: {
+    width: 'auto',
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'flex-start',
+    padding: 12,
+    backgroundColor: '#000',
+    borderRadius: 12,
+    gap: 4,
+  },
+  buttonText: {
+    color: '#FFF',
+    fontWeight: 'bold'
+  },
 });
 
 export default styles;

@@ -1,4 +1,5 @@
 import { Text, TouchableOpacity, View } from "react-native";
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import styles from "./styles";
 
 interface NFeCardProps {
@@ -24,8 +25,11 @@ const NFeCard = ({ item }: NFeCardProps) => {
         <Text style={styles.nfInfoContent}>Emissão em {item.dtEmission}</Text>
       </View>
       <View>
-        <TouchableOpacity>
-          <Text>Iniciar conferência de volumes</Text>
+        <TouchableOpacity
+          style={styles.button}
+        >
+          <MaterialIcons name="play-arrow" size={24} color="#FFF" />
+          <Text style={styles.buttonText}>Iniciar conferência de volumes</Text>
         </TouchableOpacity>
       </View>
     </View>
