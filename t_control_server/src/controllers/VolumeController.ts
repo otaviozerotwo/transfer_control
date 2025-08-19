@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { createVolumeSchema, deleteVolumeSchema, getVolumeSchema, updateVolumeBodySchema, updateVolumeParamsSchema } from '../schemas/volumeSchema';
+import { createVolumeSchema, deleteVolumeSchema, getVolumeBySchema, updateVolumeBodySchema, updateVolumeParamsSchema } from '../schemas/volumeSchema';
 import VolumeService from '../services/volumeService';
 
 class VolumeController {
@@ -23,7 +23,7 @@ class VolumeController {
   }
 
   async getVolumeBy(req: Request, res: Response): Promise<any> {
-    const parseParamsResult = getVolumeSchema.safeParse(req.params);
+    const parseParamsResult = getVolumeBySchema.safeParse(req.params);
 
     if (!parseParamsResult.success) {
       const formattedErrors = parseParamsResult.error.format();

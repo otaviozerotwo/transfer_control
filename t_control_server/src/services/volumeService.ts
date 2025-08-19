@@ -46,7 +46,7 @@ class VolumeService {
         'recipient.name AS recipient',
         'volume.status As status'
       ])
-      .where('volume.id = :id', { id: data.id })
+      .where('volume.nrVolume = :nrVolume', { nrVolume: data.nrVolume })
       .getRawOne();
 
     if (!volume) {
@@ -63,7 +63,7 @@ class VolumeService {
       throw new NotFoundError('Volume não encontrado.');
     }
 
-    volume.nrVolume = data.nr_volume;
+    volume.nrVolume = data.nrVolume;
     volume.nfe = { id: data.nfe } as NFe;
 
     await volumeRepository.save(volume);
