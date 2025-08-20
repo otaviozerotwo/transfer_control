@@ -8,6 +8,7 @@ import axios from "axios";
 import styles from "./styles";
 import NFeCard from "../../components/NFeCard";
 import ConfirmModal from "../../components/ConfirmModal";
+import cameraPermission from "../../utils/cameraPermission";
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 type NFeListRouteProp = RouteProp<RootStackParamList, 'NFeList'>;
@@ -64,6 +65,7 @@ const NFeList = () => {
 
   const handleConfirm = () => {
     setModalVisible(false);
+    cameraPermission();
     navigation.navigate('ScanVolume');
   };
   
